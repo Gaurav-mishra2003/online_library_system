@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Authors</title>
+</head>
+<body>
+    <h1>Authors</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Bio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+                <tr>
+                    <td>{{ author.id }}</td>
+                    <td>{{ author.name }}</td>
+                    <td>{{ author.email }}</td>
+                    <td>{{ author.bio }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No authors found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div>
+        <span>
+            Page {{ authors.number }} of {{ authors.paginator.num_pages }}
+        </span>
+        <div>
+            {% if authors.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ authors.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in authors.paginator.page_range %}
+                {% if authors.number == num %}
+                    <strong>{{ num }}</strong>
+                {% elif num > authors.number|add:'-3' and num < authors.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if authors.has_next %}
+                <a href="?page={{ authors.next_page_number }}">Next</a>
+                <a href="?page={{ authors.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'add_author' %}">Add New Author</a> |
+  
+</body>
+</html>
